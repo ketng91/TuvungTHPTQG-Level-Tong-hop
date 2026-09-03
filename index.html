@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Từ vựng Level Tổng hợp- Lớp Anh thầy Kết</title>
+<title>Từ vựng bài học- Lớp Anh thầy Kết</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <style>
@@ -63,10 +63,22 @@ header {
   white-space: nowrap;
 }
 /* ===== TOP SELECT ===== */
-.top-select {
-  display: flex;
-  justify-content: flex-start;
-  margin: 20px 40px;
+.top-bar{
+  width:85%;
+  margin:20px auto;
+  display:flex;
+  align-items:center;
+  gap:20px;
+}
+
+.top-bar select{
+  min-width:240px;
+  flex-shrink:0;
+}
+
+.top-bar audio{
+  flex:1;
+  height:42px;
 }
 
 select {
@@ -82,7 +94,7 @@ select {
 /* MEDIA QUERY cho điện thoại */
 @media (max-width: 480px) {
 
-    .header-center {
+  .header-center {
     flex-basis: 100%;
     order: 2;
     text-align: center;
@@ -93,6 +105,21 @@ select {
 
   .header-left {
     order: 1;
+  }
+
+  /* Lesson + Audio xuống hàng trên điện thoại */
+  .top-bar{
+    flex-direction: column;
+    align-items: stretch;
+    width: 90%;
+  }
+
+  .top-bar select{
+    width: 100%;
+  }
+
+  .top-bar audio{
+    width: 100%;
   }
 }
 
@@ -109,6 +136,8 @@ select {
     font-size: 22px;
   }
 }
+
+
 
 
   .top-select {
@@ -220,6 +249,33 @@ select {
     margin-left: 10px;
   }
 
+
+.audio-box{
+  width:80%;
+  margin:40px auto;
+  padding:25px;
+  background:#e3fdfd;
+  border-radius:12px;
+  text-align:center;
+}
+
+.audio-box h2{
+  color:#7a4e3e;
+  margin-bottom:15px;
+}
+
+.audio-box audio{
+  width:100%;
+  max-width:700px;
+}
+
+.audio-note{
+  margin-top:10px;
+  color:#666;
+  font-size:18px;
+}
+
+
   footer {
     font-size: 22px;
     margin-top: 40px;
@@ -238,6 +294,7 @@ select {
 .speaker-icon:hover{
   color:#ff6b6b;
 }
+
 .word-text{
     display:flex;
     align-items:flex-start;
@@ -253,6 +310,58 @@ select {
 .vn-word{
     flex:1;
 }
+
+/* ===== ẨN / HIỆN NGHĨA TỪ VỰNG ===== */
+
+
+.word-list.hide-all-meanings .vn-word {
+    visibility: hidden !important;
+}
+
+/* Từ nào được click để hiện riêng thì hiện lên */
+.word-list.hide-all-meanings .vn-word.show-individual {
+    visibility: visible !important;
+}
+
+.en-word {
+    cursor: pointer;
+}
+
+.en-word:hover {
+    color: #d66b5d;
+}
+
+.en-word {
+    cursor: pointer;
+}
+
+.en-word:hover {
+    color: #d66b5d;
+}
+
+.toggle-meaning-box {
+    width: 85%;
+    margin: 20px auto -5px auto;
+    text-align: left;
+}
+
+#toggleMeaningBtn {
+    background: #ffd6ba;
+    color: #7a4e3e;
+    border: 2px solid #f3b28f;
+    border-radius: 10px;
+    padding: 10px 18px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all .2s ease;
+}
+
+#toggleMeaningBtn:hover {
+    background: #ffb3ba;
+    transform: translateY(-1px);
+}
+
 
 @media (max-width:768px){
 
@@ -272,7 +381,6 @@ select {
   }
 
 }
-
 
   .confetti {
     position: fixed;
@@ -301,12 +409,14 @@ select {
     </a>
   </div>
   <div class="header-center">
-    Từ vựng Level Tổng hợp
+    Từ vựng Level A
   </div>
 </header>
 
 <!-- Bộ chọn -->
-<div class="top-select">
+<!-- Bộ chọn + Audio -->
+<div class="top-bar">
+
   <select id="wordList">
     <option value="1">Từ vựng Level TH - 1</option>
     <option value="2">Từ vựng Level TH - 2</option>
@@ -339,16 +449,16 @@ select {
     <option value="29">Từ vựng Level TH - 29</option>
     <option value="30">Từ vựng Level TH - 30</option>
 
-
-
-
-
-
-
-
   </select>
 </div>
 
+
+<!-- NÚT HIỆN / ẨN NGHĨA -->
+<div class="toggle-meaning-box">
+  <button id="toggleMeaningBtn" onclick="toggleAllMeanings()">
+    🙈 Ẩn nghĩa
+  </button>
+</div>
 
 
 <script>
@@ -382,9 +492,25 @@ document.addEventListener("DOMContentLoaded", function() {
             font-size:18px; color:#7a4e3e;">
   Đã biết 0 / 0
 </div>
+<div style="margin:15px 0;">
 
+<button id="btnVNEN"
+        onclick="setMode('vn-en')">
 
-  <div id="vietWord">Chọn Bộ từ vựng để bắt đầu</div>
+Việt ➜ Anh
+
+</button>
+
+<button id="btnENVN"
+        onclick="setMode('en-vn')">
+
+Anh ➜ Việt
+
+</button>
+
+</div>
+
+  <div id="vietWord">Chọn hiển thị Việt Anh/Anh Việt để bắt đầu</div>
     
   <!-- Hiển thị đáp án -->
 <div id="answer" style="font-size:22px;color:#7a4e3e; margin-top:15px; text-align:center; min-height:40px;"></div>
@@ -401,6 +527,8 @@ document.addEventListener("DOMContentLoaded", function() {
 <!-- Bài tập -->
 <div class="exercise" id="exercise"></div>
 
+
+
 <footer>Chúc mừng bạn đã hoàn thành bài học!</footer>
 <script>
 const selectEl = document.getElementById("wordList");
@@ -408,9 +536,26 @@ const selectEl = document.getElementById("wordList");
 function sortOptionsByNumber() {
   const opts = Array.from(selectEl.options);
 
-  opts.sort((a, b) => {
-    return Number(a.value) - Number(b.value);
-  });
+opts.sort((a, b) => {
+
+    const getKey = v => {
+        const m = v.match(/^(\d+)([A-Z]?)$/);
+
+        return {
+            num: parseInt(m[1]),
+            letter: m[2] || ""
+        };
+    };
+
+    const x = getKey(a.value);
+    const y = getKey(b.value);
+
+    if (x.num !== y.num)
+        return x.num - y.num;
+
+    return x.letter.localeCompare(y.letter);
+
+});
 
   selectEl.innerHTML = "";
   opts.forEach(o => selectEl.appendChild(o));
@@ -3451,29 +3596,61 @@ const data = {
 
 
 let currList = 1, listCopy=[], index=0;
+    listCopy = [],
+    index = 0;
 
 let totalWords = 0;
 let knownCount = 0;
 
+let reviewMode = "vn-en";
+
+// Trạng thái Hiện / Ẩn nghĩa
+let meaningsVisible = true;
+
 /********** LOAD LIST **********/
 function loadList(){
+
   currList = document.getElementById("wordList").value;
+
   listCopy = [...data[currList]];
+
   totalWords = listCopy.length;
+
   knownCount = 0;
 
   updateCounter();
+
   renderWords();
-  index=-1;
-  nextWord();
+
   loadExercises();
+
+  setMode(reviewMode);
+
 }
 
 function updateCounter(){
   document.getElementById("progressCounter").innerText =
     `Đã biết ${knownCount} / ${totalWords}`;
 }
+function setMode(mode){
 
+   reviewMode = mode;
+
+   document.getElementById("btnVNEN")
+      .style.background =
+      mode==="vn-en"
+      ? "#ffb3ba"
+      : "#a0e7e5";
+
+   document.getElementById("btnENVN")
+      .style.background =
+      mode==="en-vn"
+      ? "#ffb3ba"
+      : "#a0e7e5";
+
+   nextWord();
+
+}
 
 document.getElementById("wordList").onchange = loadList;
 loadList();
@@ -3493,7 +3670,7 @@ function speakWord(text){
   const utter = new SpeechSynthesisUtterance(cleanText);
 
   utter.lang = "en-US";
-  utter.rate = 0.85;
+  utter.rate = 1;
   utter.pitch = 1;
   utter.volume = 1;
 
@@ -3504,7 +3681,17 @@ function speakWord(text){
 function renderWords(){
 
   const box = document.getElementById("wordContainer");
+
   box.innerHTML = "";
+
+  // Nếu đang ở chế độ ẩn nghĩa
+  // thì danh sách mới cũng phải ẩn nghĩa
+  if (!meaningsVisible) {
+      box.classList.add("hide-all-meanings");
+  } else {
+      box.classList.remove("hide-all-meanings");
+  }
+
 
   let sorted = [...data[currList]].sort((a,b)=>b.tick - a.tick);
 
@@ -3515,31 +3702,108 @@ function renderWords(){
     box.innerHTML += `
       <div class="word-row">
 
-<span class="word-text">
+        <span class="word-text">
 
-  <span class="en-word">
-    ${item.en}:
-  </span>
+          <span 
+            class="en-word"
+            onclick="toggleOneMeaning(this)"
+            title="Click để hiện / ẩn nghĩa"
+          >
+            ${item.en}:
+          </span>
 
-  <span class="vn-word">
-    ${item.vn}
-  </span>
+          <span class="vn-word">
+            ${item.vn}
+          </span>
 
-  <i class="fa-solid fa-volume-high speaker-icon"
-     onclick="event.stopPropagation();speakWord(\`${item.en}\`)">
-  </i>
+          <i class="fa-solid fa-volume-high speaker-icon"
+             onclick="event.stopPropagation();speakWord(\`${item.en}\`)">
+          </i>
 
-</span>
+        </span>
+
         <input
           type="checkbox"
           ${item.tick ? "checked" : ""}
-          onclick="toggleTick(${realIndex})">
+          onclick="event.stopPropagation(); toggleTick(${realIndex})">
 
       </div>
     `;
   });
 
 }
+
+/********** HIỆN / ẨN NGHĨA **********/
+
+// Nút Hiện / Ẩn toàn bộ nghĩa
+function toggleAllMeanings() {
+
+    const wordList = document.getElementById("wordContainer");
+    const button = document.getElementById("toggleMeaningBtn");
+    const meanings = wordList.querySelectorAll(".vn-word");
+
+    meaningsVisible = !meaningsVisible;
+
+    if (meaningsVisible) {
+
+        // HIỆN TẤT CẢ
+        wordList.classList.remove("hide-all-meanings");
+
+        meanings.forEach(word => {
+            word.classList.remove("show-individual");
+            word.style.visibility = "visible";
+        });
+
+        button.innerHTML = "🙈 Ẩn nghĩa";
+
+    } else {
+
+        // ẨN TẤT CẢ
+        wordList.classList.add("hide-all-meanings");
+
+        meanings.forEach(word => {
+            word.classList.remove("show-individual");
+            word.style.visibility = "";
+        });
+
+        button.innerHTML = "👁️ Hiện nghĩa";
+    }
+}
+
+
+// Click từng từ tiếng Anh
+function toggleOneMeaning(enWord) {
+
+    const vnWord = enWord.nextElementSibling;
+
+    if (!vnWord) return;
+
+
+    // Nếu đang ẨN TOÀN BỘ
+    // click từ nào thì hiện riêng nghĩa từ đó
+    if (!meaningsVisible) {
+
+        vnWord.classList.toggle("show-individual");
+
+    } 
+    
+    // Nếu đang HIỆN TOÀN BỘ
+    // click từ nào thì ẩn / hiện riêng từ đó
+    else {
+
+        if (vnWord.style.visibility === "hidden") {
+
+            vnWord.style.visibility = "visible";
+
+        } else {
+
+            vnWord.style.visibility = "hidden";
+
+        }
+
+    }
+}
+
 /********** TICK UPDATE **********/
 function toggleTick(realIndex){
   data[currList][realIndex].tick = !data[currList][realIndex].tick;
@@ -3554,7 +3818,18 @@ function nextWord(){
     return;
   }
   index=Math.floor(Math.random()*listCopy.length);
-  document.getElementById("vietWord").innerHTML=listCopy[index].vn;
+if(reviewMode==="vn-en"){
+
+document.getElementById("vietWord").innerHTML =
+listCopy[index].vn;
+
+}
+else{
+
+document.getElementById("vietWord").innerHTML =
+listCopy[index].en;
+
+}
 }
 
 function know(){
@@ -3566,9 +3841,21 @@ function know(){
 }
 
 function dontKnow(){
-  document.getElementById("answer").innerHTML=listCopy[index].en;
+
+if(reviewMode==="vn-en"){
+
+document.getElementById("answer").innerHTML =
+listCopy[index].en;
+
+}
+else{
+
+document.getElementById("answer").innerHTML =
+listCopy[index].vn;
+
 }
 
+}
 /********** EXERCISES **********/
 function loadExercises(){
   const box=document.getElementById("exercise");
